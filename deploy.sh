@@ -9,6 +9,9 @@ sudo mkdir -p /var/www/ai-text-generator
 echo "Moving files to app folder"
 sudo mv * /var/www/ai-text-generator
 
+# Set appropriate permissions for the app directory
+sudo chown -R $USER:$USER /var/www/ai-text-generator
+
 # Navigate to the app directory
 cd /var/www/ai-text-generator/
 sudo mv env .env
