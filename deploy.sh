@@ -1,13 +1,16 @@
 #!/bin/bash
 
-echo "deleting old app"
+echo "Deleting old app"
 sudo rm -rf /var/www/
 
-echo "creating app folder"
+echo "Creating app folder"
 sudo mkdir -p /var/www/ai-text-generator 
 
-echo "moving files to app folder"
-sudo mv  * /var/www/ai-text-generator
+echo "Moving files to app folder"
+sudo mv * /var/www/ai-text-generator
+
+# Set appropriate permissions for the app directory
+sudo chown -R $USER:$USER /var/www/ai-text-generator
 
 # Navigate to the app directory
 cd /var/www/ai-text-generator/
@@ -58,13 +61,10 @@ else
 fi
 
 # Stop any existing Gunicorn process
-cd /var/www/ai-text-generator/src
 sudo pkill gunicorn
-sudo rm -rf myapp.sock
+sudo rm -rf /var/www/ai-text-generator/src/myapp.sock
 
-# # Start Gunicorn with the Flask application
-# # Replace 'server:app' with 'yourfile:app' if your Flask instance is named differently.
-# # gunicorn --workers 3 --bind 0.0.0.0:8000 server:app &
-echo "starting gunicorn"
-sudo gunicorn --workers 3 --bind unix:myapp.sock  app:app --user www-data --group www-data --daemon
-echo "started gunicorn 🚀"
+# Start Gunicorn with the Flask application
+echo "Starting Gunicorn..."
+sudo /path/to/venv/bin/gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/src/myapp.sock app:app --user www-data --group www-data --daemon
+echo "Started Gunicorn 🚀"
