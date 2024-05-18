@@ -60,6 +60,8 @@ else
     echo "Nginx reverse proxy configuration already exists."
 fi
 
+echo "Configuring Gunicorn"
+
 # Stop any existing Gunicorn process
 sudo pkill gunicorn
 sudo rm -rf /var/www/ai-text-generator/myapp.sock
