@@ -1,16 +1,13 @@
 #!/bin/bash
 
-echo "Deleting old app"
+echo "deleting old app"
 sudo rm -rf /var/www/
 
-echo "Creating app folder"
+echo "creating app folder"
 sudo mkdir -p /var/www/ai-text-generator 
 
-echo "Moving files to app folder"
-sudo mv * /var/www/ai-text-generator
-
-# Set appropriate permissions for the app directory
-sudo chown -R $USER:$USER /var/www/ai-text-generator
+echo "moving files to app folder"
+sudo mv  * /var/www/ai-text-generator
 
 # Navigate to the app directory
 cd /var/www/ai-text-generator/
@@ -32,10 +29,6 @@ source venv/bin/activate
 echo "Installing application dependencies from requirements.txt"
 pip install -r requirements.txt
 
-# Install Gunicorn
-echo "Installing Gunicorn"
-pip install gunicorn
-
 # Update and install Nginx if not already installed
 if ! command -v nginx > /dev/null; then
     echo "Installing Nginx"
@@ -53,7 +46,7 @@ server {
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/var/www/ai-text-generator/myapp.sock;
+        proxy_pass http://unix:/var/www/ai-text-generator/src/myapp.sock;
     }
 }
 EOF'
@@ -64,24 +57,14 @@ else
     echo "Nginx reverse proxy configuration already exists."
 fi
 
-echo "Configuring Gunicorn"
-
 # Stop any existing Gunicorn process
+cd /var/www/ai-text-generator/src
 sudo pkill gunicorn
-sudo rm -rf /var/www/ai-text-generator/myapp.sock
+sudo rm -rf myapp.sock
 
-# Start Gunicorn with the Flask application and log output
-echo "Starting Gunicorn..."
-# Activate the virtual environment
-source /var/www/ai-text-generator/venv/bin/activate
-venv/bin/gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock src.app:app --daemon --log-file /var/www/ai-text-generator/gunicorn.log --log-level debug
-
-# Ensure the socket has the correct permissions
-if [ -e /var/www/ai-text-generator/myapp.sock ]; then
-    sudo chown www-data:www-data /var/www/ai-text-generator/myapp.sock
-    sudo chmod 660 /var/www/ai-text-generator/myapp.sock
-else
-    echo "Gunicorn failed to create the socket file"
-fi
-
-echo "Started Gunicorn..."
+# # Start Gunicorn with the Flask application
+# # Replace 'server:app' with 'yourfile:app' if your Flask instance is named differently.
+# # gunicorn --workers 3 --bind 0.0.0.0:8000 server:app &
+echo "starting gunicorn"
+sudo gunicorn --workers 3 --bind unix:myapp.sock  app:app --user www-data --group www-data --daemon
+echo "started gunicorn 🚀"
