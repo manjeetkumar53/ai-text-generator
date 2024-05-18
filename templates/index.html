@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Generation AI</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Text Generation AI</h1>
+      </header>
+      <main>
+        <label for="input-text" class="visually-hidden">Input Text</label>
+        <textarea
+          id="input-text"
+          placeholder="Enter your text here..."
+        ></textarea>
+        <button id="generate-btn">Generate Text</button>
+        <div id="loader" class="loader" style="display: none"></div>
+        <div id="generated-text" aria-live="polite"></div>
+      </main>
+    </div>
+    <script src="/static/script.js"></script>
+  </body>
+</html>
