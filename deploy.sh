@@ -30,7 +30,11 @@ source venv/bin/activate
 
 # Install application dependencies from requirements.txt
 echo "Installing application dependencies from requirements.txt"
-venv/bin/pip install -r requirements.txt
+pip install -r requirements.txt
+
+# Install Gunicorn
+echo "Installing Gunicorn"
+pip install gunicorn
 
 # Update and install Nginx if not already installed
 if ! command -v nginx > /dev/null; then
@@ -67,7 +71,13 @@ sudo pkill gunicorn
 sudo rm -rf /var/www/ai-text-generator/myapp.sock
 
 # Start Gunicorn with the Flask application
-cd /var/www/ai-text-generator/src
 echo "Starting Gunicorn..."
-sudo venv/bin/gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock app:app --user www-data --group www-data --daemon
+# Activate the virtual environment
+source /var/www/ai-text-generator/venv/bin/activate
+gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock src.app:app --daemon
+
+# Ensure the socket has the correct permissions
+sudo chown www-data:www-data /var/www/ai-text-generator/myapp.sock
+sudo chmod 660 /var/www/ai-text-generator/myapp.sock
+
 echo "Started Gunicorn..."
