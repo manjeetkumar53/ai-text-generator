@@ -70,14 +70,18 @@ echo "Configuring Gunicorn"
 sudo pkill gunicorn
 sudo rm -rf /var/www/ai-text-generator/myapp.sock
 
-# Start Gunicorn with the Flask application
+# Start Gunicorn with the Flask application and log output
 echo "Starting Gunicorn..."
 # Activate the virtual environment
 source /var/www/ai-text-generator/venv/bin/activate
-gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock src.app:app --daemon
+venv/bin/gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock src.app:app --daemon --log-file /var/www/ai-text-generator/gunicorn.log --log-level debug
 
 # Ensure the socket has the correct permissions
-sudo chown www-data:www-data /var/www/ai-text-generator/myapp.sock
-sudo chmod 660 /var/www/ai-text-generator/myapp.sock
+if [ -e /var/www/ai-text-generator/myapp.sock ]; then
+    sudo chown www-data:www-data /var/www/ai-text-generator/myapp.sock
+    sudo chmod 660 /var/www/ai-text-generator/myapp.sock
+else
+    echo "Gunicorn failed to create the socket file"
+fi
 
 echo "Started Gunicorn..."
