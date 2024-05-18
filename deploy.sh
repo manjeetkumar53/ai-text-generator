@@ -15,11 +15,19 @@ sudo mv env .env
 
 sudo apt-get update
 echo "Installing Python and pip"
-sudo apt-get install -y python3 python3-pip
+sudo apt-get install -y python3 python3-venv python3-pip
+
+# Create a virtual environment
+echo "Creating virtual environment"
+python3 -m venv venv
+
+# Activate the virtual environment
+echo "Activating virtual environment"
+source venv/bin/activate
 
 # Install application dependencies from requirements.txt
 echo "Installing application dependencies from requirements.txt"
-sudo pip install -r requirements.txt
+pip install -r requirements.txt
 
 # Update and install Nginx if not already installed
 if ! command -v nginx > /dev/null; then
@@ -56,5 +64,5 @@ sudo rm -rf /var/www/ai-text-generator/myapp.sock
 # Start Gunicorn with the Flask application
 echo "Starting Gunicorn..."
 cd /var/www/ai-text-generator
-sudo gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock src.app:app --user www-data --group www-data --daemon
+sudo venv/bin/gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock src.app:app --user www-data --group www-data --daemon
 echo "Started Gunicorn..."
