@@ -54,7 +54,7 @@ sudo pkill gunicorn
 sudo rm -rf /var/www/ai-text-generator/myapp.sock
 
 # Start Gunicorn with the Flask application
-echo "Starting Gunicorn"
+echo "Starting Gunicorn..."
 cd /var/www/ai-text-generator
 sudo gunicorn --workers 3 --bind unix:/var/www/ai-text-generator/myapp.sock src.app:app --user www-data --group www-data --daemon
 echo "Started Gunicorn..."
