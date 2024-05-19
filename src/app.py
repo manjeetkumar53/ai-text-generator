@@ -13,7 +13,7 @@ logging.basicConfig(filename='../app.log', level=logging.INFO, force=True)
 
 # Initialize Flask app
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
-print("call here app.py")
+print("call here app.py--->")
 @app.route('/')
 def index():
     """
