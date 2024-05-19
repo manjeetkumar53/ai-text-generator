@@ -3,9 +3,13 @@ from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import Error
 from contextlib import closing
-
+from src.logging_config import get_logger
 # Load environment variables from .env file
 load_dotenv(override=True)
+
+# Initialize logger
+logger = get_logger()
+
 
 def connect_to_db():
     """
@@ -32,6 +36,7 @@ def connect_to_db():
             database=database
         )
     except Error as e:
+        logger.error(f"Error connecting to database: {e}")
         raise Error(f"Error connecting to database: {e}")
 
 def check_table_exists(cursor, table_name):
@@ -88,7 +93,7 @@ def save_to_database(input_text, generated_text):
         generated_text (str): The generated text by the model.
     """
     try:
-        print(f"input_text: {input_text}, generated_text: {generated_text}")
+        logger.info(f"input_text: {input_text}, generated_text: {generated_text}")
 
         with closing(connect_to_db()) as conn:
             with closing(conn.cursor()) as cursor:
@@ -101,5 +106,4 @@ def save_to_database(input_text, generated_text):
                 # Commit changes
                 conn.commit()
     except Error as e:
-        print(f"Error saving to database: {e}")
-
+        logger.error(f"Error saving to database: {e}")

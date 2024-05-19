@@ -1,5 +1,9 @@
 import sqlite3
 from contextlib import closing
+from src.logging_config import get_logger
+
+# Initialize logger
+logger = get_logger()
 
 def connect_to_db():
     """
@@ -68,4 +72,4 @@ def save_to_database(input_text, generated_text):
                 insert_data(cursor, "generated_text", input_text, generated_text)
                 conn.commit()
     except sqlite3.Error as e:
-        print(f"Error saving to database: {e}")
+        logger.error(f"Error saving to database: {e}")

@@ -17,7 +17,7 @@ jobs:
           echo "ENV=${ENV}" >> env
           echo "EC2_USERNAME=${EC2_USERNAME}" >> env
           echo "OPENAI_API_KEY=${OPENAI_API_KEY}" >> env
-      - name: Run tests with pytest
+      - name: Run tests with pytest # run tests with pytest
         run: |
           python -m pytest tests  # Replace 'tests' with your test directory path
       - name: Run tests with unittest discover (Local Only)

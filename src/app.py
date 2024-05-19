@@ -3,17 +3,17 @@ from dotenv import load_dotenv
 import os
 from src.dbhandler import save_to_database
 import src.llm_client as client
-import logging
+from src.logging_config import get_logger
+
+# Import the logging module
+logger = get_logger()
+
 
 # Load environment variables from .env file
 load_dotenv(override=True)
 
-# Configure logging
-logging.basicConfig(filename='../app.log', level=logging.INFO, force=True)
-
 # Initialize Flask app
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
-print("call here app.py--->")
 @app.route('/')
 def index():
     """
@@ -28,7 +28,7 @@ def generate_text():
     """
     input_text = request.json.get('input_text', '').strip()
     if not input_text:
-        logging.warning("Input text is missing or empty")
+        logger.warning("Input text is missing or empty")
         return jsonify({'error': 'Input text is missing or empty'}), 400
 
     try:
@@ -40,11 +40,11 @@ def generate_text():
         # Save data to the database
         save_to_database(input_text, generated_text)
         
-        logging.info("Text generated and saved successfully")
+        logger.info("Text generated and saved successfully")
         return jsonify({'generated_text': generated_text})
 
     except Exception as e:
-        logging.error(f"Error generating text: {e}")
+        logger.error(f"Error generating text: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
