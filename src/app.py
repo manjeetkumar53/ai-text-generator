@@ -1,16 +1,15 @@
 from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 import os
-from dbhandler import save_to_database
-import llm_client as client
+from src.dbhandler import save_to_database
+import src.llm_client as client
 import logging
 
 # Load environment variables from .env file
 load_dotenv(override=True)
 
 # Configure logging
-#logging.basicConfig(level=logging.INFO)
-logging.basicConfig(filename='app.log', level=logging.INFO, force=True)
+logging.basicConfig(filename='../app.log', level=logging.INFO, force=True)
 
 # Initialize Flask app
 app = Flask(__name__, template_folder='../templates', static_folder='../static')

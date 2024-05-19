@@ -1,6 +1,6 @@
 import os
-from dbhandler_mysql import save_to_database as save_to_database_mysql
-from dbhandler_sqllite import save_to_database as save_to_database_sqllite
+from src.dbhandler_mysql import save_to_database as save_to_database_mysql
+from src.dbhandler_sqllite import save_to_database as save_to_database_sqllite
 
 def save_to_database(input_text, generated_text):
     database_handlers = {
