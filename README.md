@@ -175,7 +175,6 @@ python -m unittest test_dbhandler_mysql.py
 - Commit and push your changes to the `main` branch of your GitHub repository.
 - This triggers the GitHub Actions workflow, which builds the application, runs tests, and deploys it to your EC2 instance.
 - On sucessfull deployment you will see both test & deploy should be green (pass)
-  ![github-action](docs/githubaction.png)
 - In case of any CI/CD error you will get notification on your account linked to github account (see example)
   ![cicd-notification](docs/cicd-notification.png)
 
