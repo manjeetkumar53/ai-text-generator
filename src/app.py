@@ -24,7 +24,7 @@ def index():
 @app.route('/generate-text', methods=['POST'])
 def generate_text():
     """
-    Endpoint to generate text using a language model.
+    Endpoint to generate text using a language model..
     """
     input_text = request.json.get('input_text', '').strip()
     if not input_text:
