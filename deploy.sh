@@ -84,5 +84,7 @@ sudo pkill gunicorn
 
 # Start Gunicorn with the Flask application
 echo "Starting Gunicorn..."
-sudo $VENV_DIR/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 appserver:gunicorn_app --daemon
+sudo -u www-data $VENV_DIR/bin/gunicorn --workers 3 --bind unix:$SOCKET_FILE --daemon
+sudo chmod 666 $SOCKET_FILE
 echo "Started Gunicorn 🚀"
+
