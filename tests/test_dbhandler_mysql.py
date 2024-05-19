@@ -8,8 +8,6 @@ import pytest
 load_dotenv(override=True)
 
 # Add the directory containing dbhandler_mysql to sys.path
-#sys.path.append(os.getenv('PYTHONPATH'))
-#print('---------->',os.getenv('PYTHONPATH'))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 # Import the dbhandler_mysql module
