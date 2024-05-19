@@ -7,19 +7,18 @@ NGINX_SITE_CONF="/etc/nginx/sites-available/myapp"
 NGINX_SITE_LINK="/etc/nginx/sites-enabled/myapp"
 VENV_DIR="$APP_DIR/venv"
 
-echo "Deleting old app"
+# Deleting old app
 sudo rm -rf $APP_DIR
 
-echo "Creating app folder"
+# Creating app folder
 sudo mkdir -p $APP_DIR 
 
-echo "Moving files to app folder"
-# Using rsync to avoid issues with `mv`
+# Moving files to app folder
 sudo rsync -av --exclude='deploy.sh' ./ $APP_DIR
 
 # Set appropriate permissions for the app directory
-#sudo chown -R $USER:$USER $APP_DIR
-sudo chown -R $USER:$USER $APP_DIR $VENV_DIR $NGINX_SITE_CONF $NGINX_SITE_LINK $SOCKET_FILE
+sudo chown -R $USER:$USER $APP_DIR
+sudo chmod -R 755 $APP_DIR
 
 # Navigate to the app directory
 cd $APP_DIR
@@ -29,8 +28,9 @@ if [ -f env ]; then
     sudo mv env .env
 fi
 
-sudo apt-get update
+# Install Python and pip
 echo "Installing Python and pip"
+sudo apt-get update
 sudo apt-get install -y python3 python3-venv python3-pip
 
 # Create a virtual environment
