@@ -17,7 +17,6 @@ def initialize_llm():
         ValueError: If the LLM_NAME environment variable does not match any known model.
     """
     llm_name = os.environ.get('LLM_NAME')
-    print('llm_name-->',llm_name,'------',os.getenv('LLM_NAME'))
     if llm_name == 'OpenAI':
         return OpenAI()
     elif llm_name == 'Ollama':
