@@ -11,8 +11,7 @@ load_dotenv(override=True)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 # Import the app module
-from app import app
-
+from src.app import app
 
 class TestFlaskApp(unittest.TestCase):
 
@@ -26,15 +25,15 @@ class TestFlaskApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'<!DOCTYPE html>', response.data)  # Assumes your index.html contains <html> tag
 
-    @patch('app.client.initialize_llm')
-    @patch('app.client.call_llm')
-    @patch('app.save_to_database')
+    @patch('src.app.client.initialize_llm')
+    @patch('src.app.client.call_llm')
+    @patch('src.app.save_to_database')
     def test_generate_text_success(self, mock_save_to_database, mock_call_llm, mock_initialize_llm):
         # Setup mock return values
         mock_llm = MagicMock()
         mock_initialize_llm.return_value = mock_llm
         mock_call_llm.return_value = "Generated text"
-        
+
         response = self.client.post('/generate-text', json={'input_text': 'Test input'})
         #print("response-->",response.json)
 
@@ -50,12 +49,12 @@ class TestFlaskApp(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json, {'error': 'Input text is missing or empty'})
 
-    @patch('app.client.initialize_llm')
-    @patch('app.client.call_llm')
-    @patch('app.save_to_database')
+    @patch('src.app.client.initialize_llm')
+    @patch('src.app.client.call_llm')
+    @patch('src.app.save_to_database')
     def test_generate_text_exception(self, mock_save_to_database, mock_call_llm, mock_initialize_llm):
         mock_initialize_llm.side_effect = Exception("Test exception")
-        
+
         response = self.client.post('/generate-text', json={'input_text': 'Test input'})
 
         self.assertEqual(response.status_code, 500)

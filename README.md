@@ -1,11 +1,6 @@
-# ai-text-generator
+# Ai-Text-Generator
 
 AI project to Generate output based on user input using any LLM
-
-This guide covers setting up the development environment, running the application, and deploying it using the provided CI/CD pipeline with GitHub Actions and AWS EC2.
-
-````markdown
-# Python Web Application
 
 This is a Python web application. This guide will help you set up the development environment, run the application locally, and deploy it using GitHub Actions to an AWS EC2 instance.
 
@@ -43,40 +38,106 @@ This is a Python web application. This guide will help you set up the developmen
 
     ```sh
     cd src
-    python app.py # Or the entry point of your application
-
+    python app.py
     ```
 
-        Your application should now be running locally at `http://127.0.0.1:5000` (or the port specified in your app).
+5.  **Run the Application using flask**
 
+    ```sh
+    cd src
+    flask run
     ```
 
+6.  **Run the Application using gunicorn** Guide to set-up [gunicorn](setup_gunicorn.md)
+
+    ```sh
+    gunicorn --bind 127.0.0.1:5000 appserver:gunicorn_app #run from root project root dir
     ```
+
+#### Your application should now be running locally at `http://127.0.0.1:5000` (or the port specified in your app).
+
+## Running Application using different LLMs
+
+1. **Run the Application using OpenAI**
+
+- open `.env` file
+- Inside .env file set properties `OPENAI_API_KEY` and `LLM_NAME` (as shown below)
+
+```properties
+OPENAI_API_KEY=sk-xxxxxx
+LLM_NAME = "OpenAI"
+```
+
+2. **Run the Application using Ollama**
+
+- [Set-up ollama on your machine](https://github.com/ollama/ollama)
+- open `.env` file
+- Inside .env file set properties `LLM_NAME` (as shown below)
+
+```properties
+LLM_NAME = "Ollama"
+```
+
+## Running Application using different Database
+
+1. **Run the Application using MySQL**
+
+- open `.env` file
+- Inside .env file set mysql host, user, password and database properties as shown below and run application
+
+```properties
+MYSQL_HOST="localhost"
+MYSQL_USER="user"
+MYSQL_PASSWORD="pass"
+MYSQL_DATABASE="rag_db"
+DB_NAME = "mysql"
+```
+
+2. **Run the Application using Sqllite DB**
+
+- open `.env` file
+- Inside .env file set properties as shown below and run application
+
+```properties
+DB_NAME = "sqllite"
+```
 
 ## Running Tests
 
-If you have tests configured (e.g., using `pytest`), you can run them with:
+1. **Run test using Pytest**
 
-```sh
+```shell
 pytest
 ```
-````
 
-## Running test using python unittest
+_or_
 
-# Run complete test: This will initiate the discovery process, locate all your test cases, and run them sequentially. You'll see the results displayed in the terminal, indicating which tests passed and if any failed.
+```sh
+#tests in name of dir containing all test file
+pytest tests
+```
 
-    ```sh
-    python -m unittest discover
-    ```
+2. **Run test using unittest**
 
-# Run test for individual file
+_Run complete test: This will initiate the discovery process, locate all your test cases, and run them sequentially. You'll see the results displayed in the terminal, indicating which tests passed and if any failed._
 
-    ```sh
-    python -m unittest test_dbhandler_mysql.py
-    ```
+```sh
+python -m unittest discover
+```
 
-## Deployment to AWS EC2
+_or_
+
+```sh
+python -m unittest discover tests
+```
+
+3. **Run test for individual file using unittest**
+
+```sh
+python -m unittest test_dbhandler_mysql.py
+```
+
+## Setting CI/CD pipeline (deployment to AWS EC2)
 
 ### 1. Set Up AWS EC2 Instance
 
@@ -93,89 +154,8 @@ pytest
 
 1. **Create GitHub Actions Workflow**
 
-   In your GitHub repository, create a file at `.github/workflows/deploy.yml` with the following content:
-
-   ```yaml
-   name: CI/CD Pipeline
-
-   on:
-     push:
-       branches:
-         - main
-
-   jobs:
-     build:
-       runs-on: ubuntu-latest
-
-       steps:
-         - name: Checkout code
-           uses: actions/checkout@v2
-
-         - name: Set up Python
-           uses: actions/setup-python@v2
-           with:
-             python-version: "3.8"
-
-         - name: Install dependencies
-           run: |
-             python -m pip install --upgrade pip
-             pip install -r requirements.txt
-
-         - name: Run tests
-           run: |
-             # Run your tests here, e.g.:
-             # pytest
-
-     deploy:
-       needs: build
-       runs-on: ubuntu-latest
-       if: github.ref == 'refs/heads/main'
-
-       steps:
-         - name: Checkout code
-           uses: actions/checkout@v2
-
-         - name: Set up SSH
-           uses: webfactory/ssh-agent@v0.5.3
-           with:
-             ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-         - name: Copy files to EC2
-           run: |
-             scp -o StrictHostKeyChecking=no -r * ec2-user@YOUR_EC2_PUBLIC_IP:/home/ec2-user/app
-
-         - name: SSH and deploy
-           run: |
-             ssh -o StrictHostKeyChecking=no ec2-user@YOUR_EC2_PUBLIC_IP << 'EOF'
-               cd /home/ec2-user/app
-               # If using Docker
-               # docker-compose down
-               # docker-compose up -d --build
-               # Otherwise, run your deployment commands, e.g.:
-               # pip install -r requirements.txt
-               # gunicorn --bind 0.0.0.0:80 app:app
-             EOF
-   ```
-
-2. **Set Up GitHub Secrets**
-
-   - Go to your GitHub repository settings.
-   - Navigate to `Secrets` > `Actions`.
-   - Add a new secret called `SSH_PRIVATE_KEY` and paste the contents of your EC2 instance's private key.
-
-### 4. Update EC2 Instance (for docker only)
-
-SSH into your EC2 instance and prepare it for the application:
-
-```sh
-sudo yum update -y
-sudo yum install -y python3-pip
-sudo pip3 install virtualenv
-# If using Docker
-sudo amazon-linux-extras install docker
-sudo service docker start
-sudo usermod -a -G docker ec2-user
-```
+- In your GitHub repository, create a file at `.github/workflows/deploy.yaml`
+- Refer to [CI/CD set up guide](setup_cicd.md) to set-up pipeline.
 
 ### 5. Deploy Application
 
@@ -193,9 +173,3 @@ Your application should now be accessible via the public IP or DNS of your EC2 i
 ## License
 
 This project is licensed under the MIT License.
-
-```
-
-This README provides a comprehensive guide to set up and run the Python web application locally and deploy it to an AWS EC2 instance using GitHub Actions. Adjust the instructions as necessary to fit your specific application and environment.
-
-```
