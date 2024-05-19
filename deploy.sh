@@ -85,4 +85,22 @@ sudo pkill gunicorn
 # Start Gunicorn with the Flask application
 echo "Starting Gunicorn..."
 sudo $VENV_DIR/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 appserver:gunicorn_app --daemon
-echo "Started Gunicorn 🚀"
+
+# Check if Gunicorn started correctly
+echo "Checking Gunicorn status..."
+if ! pgrep -f gunicorn > /dev/null; then
+    echo "Gunicorn did not start correctly. Check the Gunicorn logs for errors."
+    exit 1
+fi
+
+echo "Gunicorn started correctly. Starting Nginx..."
+sudo systemctl restart nginx
+
+# Check if Nginx started correctly
+echo "Checking Nginx status..."
+if ! pgrep -f nginx > /dev/null; then
+    echo "Nginx did not start correctly. Check the Nginx logs for errors."
+    exit 1
+fi
+
+echo "Nginx started correctly. Deployment complete!"
