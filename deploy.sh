@@ -22,8 +22,8 @@ sudo apt-get install -y python3 python3-pip
 
 # Create and activate virtual environment
 echo "creating virtual environment"
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 
 # Install application dependencies from requirements.txt
 echo "Install application dependencies from requirements.txt"
