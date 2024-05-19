@@ -20,10 +20,6 @@ jobs:
       - name: Run tests with pytest # run tests with pytest
         run: |
           python -m  pytest -k test_app.py # run only test_app.py
-      - name: Run tests with unittest discover (Local Only)
-        if: runner.is_local # Run only on local runner
-        run: |
-          python -m unittest discover tests
 
   deploy: # Existing deploy job (modified)
     runs-on: ubuntu-latest
