@@ -18,6 +18,9 @@ You need to configure the following secrets in your GitHub repository:
 4. `ENV`: The environment variable for your application (optional).
 5. `OPENAI_API_KEY`: The OpenAI API key for your application (replace with your actual secret).
 
+![set-secrets](https://github.com/manjeetkumar53/ai-text-generator/assets/28828683/2e633d0d-53f8-4e40-9931-de82ea61016f)
+
+
 To set up secrets, go to your GitHub repository, navigate to `Settings` > `Secrets and variables` > `Actions`, and add the above secrets.
 
 #### Creating the deploy.yaml File
