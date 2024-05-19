@@ -145,10 +145,14 @@ python -m unittest test_dbhandler_mysql.py
 - Choose an Amazon Linux 2 AMI.
 - Create a new key pair or use an existing one for SSH access.
 - Ensure the security group allows SSH (port 22) and HTTP/HTTPS (ports 80/443).
+- My EC2 instance example
+  ![aws-ec2](https://github.com/manjeetkumar53/ai-text-generator/assets/28828683/d554b4fa-639c-44e4-8b92-46da970c1521)
+
 
 ### 2. Configure GitHub Repository
 
 - Push your code to a GitHub repository.
+- Set secrets Refer to [CI/CD set up guide](setup_cicd.md) to set-up CI/CD pipeline.
 
 ### 3. Set Up GitHub Actions
 
@@ -161,8 +165,17 @@ python -m unittest test_dbhandler_mysql.py
 
 - Commit and push your changes to the `main` branch of your GitHub repository.
 - This triggers the GitHub Actions workflow, which builds the application, runs tests, and deploys it to your EC2 instance.
+- On sucessfull deployment you will see both test & deploy should be green (pass)
+![github-action](https://github.com/manjeetkumar53/ai-text-generator/assets/28828683/869ee9c0-c476-4eb1-9804-a201d60fb980)
+- In case of any CI/CD error you will get notification on your account linked to github account (see example)
+![cicd-notification](https://github.com/manjeetkumar53/ai-text-generator/assets/28828683/24cb3f4b-9799-4e70-a68e-6b9eb232a9fe)
+
+
 
 Your application should now be accessible via the public IP or DNS of your EC2 instance.
+See below example
+![demo1](https://github.com/manjeetkumar53/ai-text-generator/assets/28828683/664cb876-e2e5-4618-a99e-f1902caf2132)
+
 
 ## Troubleshooting
 
