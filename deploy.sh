@@ -12,11 +12,6 @@ sudo mv  * /var/www/ai-text-generator
 # Navigate to the app directory
 cd /var/www/ai-text-generator/
 
-# Create and activate virtual environment
-echo "creating virtual environment"
-python3 -m venv venv
-source venv/bin/activate
-
 # Move environment file
 sudo mv env .env
 
@@ -25,9 +20,14 @@ echo "installing python and pip"
 sudo apt-get update
 sudo apt-get install -y python3 python3-pip
 
+# Create and activate virtual environment
+echo "creating virtual environment"
+python3 -m venv .venv
+source .venv/bin/activate
+
 # Install application dependencies from requirements.txt
 echo "Install application dependencies from requirements.txt"
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # Update and install Nginx if not already installed
 if ! command -v nginx > /dev/null; then
