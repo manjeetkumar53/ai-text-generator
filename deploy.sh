@@ -7,37 +7,38 @@ NGINX_SITE_CONF="/etc/nginx/sites-available/myapp"
 NGINX_SITE_LINK="/etc/nginx/sites-enabled/myapp"
 VENV_DIR="$APP_DIR/venv"
 
+# Run the script as the correct user
+sudo -u ec2-user bash
+
 echo "Deleting old app"
-sudo rm -rf $APP_DIR
+rm -rf $APP_DIR
 
 echo "Creating app folder"
-sudo mkdir -p $APP_DIR 
+mkdir -p $APP_DIR
 
 echo "Moving files to app folder"
-# Using rsync to avoid issues with `mv`
-sudo rsync -av --exclude='deploy.sh' ./ $APP_DIR
+rsync -av --exclude='deploy.sh' ./ $APP_DIR
 
 # Set appropriate permissions for the app directory
-sudo chown -R $USER:$USER $APP_DIR
+chown -R ec2-user:ec2-user $APP_DIR
 
 # Navigate to the app directory
 cd $APP_DIR
 
 # Check if .env exists before moving
 if [ -f env ]; then
-    sudo mv env .env
+    mv env .env
 fi
 
-sudo apt-get update
 echo "Installing Python and pip"
-sudo apt-get install -y python3 python3-venv python3-pip
+apt-get update
+apt-get install -y python3 python3-venv python3-pip
 
 # Create a virtual environment
 echo "Creating virtual environment"
 python3 -m venv $VENV_DIR
 
 # Activate the virtual environment
-echo "Activating virtual environment"
 source $VENV_DIR/bin/activate
 
 # Install application dependencies from requirements.txt
@@ -51,14 +52,14 @@ pip install gunicorn
 # Update and install Nginx if not already installed
 if ! command -v nginx > /dev/null; then
     echo "Installing Nginx"
-    sudo apt-get install -y nginx
+    apt-get install -y nginx
 fi
 
 # Configure Nginx to act as a reverse proxy if not already configured
 if [ ! -f $NGINX_SITE_CONF ]; then
     echo "Configuring Nginx as reverse proxy"
-    sudo rm -f /etc/nginx/sites-enabled/default
-    sudo bash -c "cat > $NGINX_SITE_CONF <<EOF
+    rm -f /etc/nginx/sites-enabled/default
+    cat > $NGINX_SITE_CONF <<EOF
 server {
     listen 80;
     server_name _;
@@ -71,20 +72,19 @@ server {
         proxy_set_header X-Forwarded-Proto \$scheme;
     }
 }
-EOF"
-    sudo ln -s $NGINX_SITE_CONF $NGINX_SITE_LINK
-    sudo systemctl restart nginx
+EOF
+    ln -s $NGINX_SITE_CONF $NGINX_SITE_LINK
+    systemctl restart nginx
 else
     echo "Nginx reverse proxy configuration already exists."
 fi
 
 # Stop any existing Gunicorn process
 echo "Stopping any existing Gunicorn processes"
-sudo pkill gunicorn
+pkill gunicorn
 
 # Start Gunicorn with the Flask application
 echo "Starting Gunicorn..."
-sudo -u www-data $VENV_DIR/bin/gunicorn --workers 3 --bind unix:$SOCKET_FILE --daemon
-sudo chmod 666 $SOCKET_FILE
+$VENV_DIR/bin/gunicorn --workers 3 --bind unix:$SOCKET_FILE --daemon
+chmod 666 $SOCKET_FILE
 echo "Started Gunicorn 🚀"
-
