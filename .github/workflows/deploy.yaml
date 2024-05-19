@@ -19,7 +19,7 @@ jobs:
           echo "OPENAI_API_KEY=${OPENAI_API_KEY}" >> env
       - name: Run tests with pytest # run tests with pytest
         run: |
-          python -m pytest -k "test_app.py" tests/
+          python -m pytest tests/test_app.py
 
   deploy: # Existing deploy job (modified)
     runs-on: ubuntu-latest
