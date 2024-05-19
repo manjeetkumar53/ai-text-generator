@@ -7,8 +7,11 @@ NGINX_SITE_CONF="/etc/nginx/sites-available/myapp"
 NGINX_SITE_LINK="/etc/nginx/sites-enabled/myapp"
 VENV_DIR="$APP_DIR/venv"
 
-# Run the script as the correct user
-sudo -u ec2-user bash
+# Check if running with sudo
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
 
 echo "Deleting old app"
 rm -rf $APP_DIR
@@ -20,7 +23,7 @@ echo "Moving files to app folder"
 rsync -av --exclude='deploy.sh' ./ $APP_DIR
 
 # Set appropriate permissions for the app directory
-chown -R ec2-user:ec2-user $APP_DIR
+chown -R $USER:$USER $APP_DIR
 
 # Navigate to the app directory
 cd $APP_DIR
@@ -85,6 +88,6 @@ pkill gunicorn
 
 # Start Gunicorn with the Flask application
 echo "Starting Gunicorn..."
-$VENV_DIR/bin/gunicorn --workers 3 --bind unix:$SOCKET_FILE --daemon
+$VENV_DIR/bin/gunicorn --workers 3 --bind unix:$SOCKET_FILE app:app --daemon
 chmod 666 $SOCKET_FILE
 echo "Started Gunicorn 🚀"
