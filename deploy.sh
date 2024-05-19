@@ -18,7 +18,8 @@ echo "Moving files to app folder"
 sudo rsync -av --exclude='deploy.sh' ./ $APP_DIR
 
 # Set appropriate permissions for the app directory
-sudo chown -R $USER:$USER $APP_DIR
+#sudo chown -R $USER:$USER $APP_DIR
+sudo chown -R <username>:<username> $APP_DIR $VENV_DIR $NGINX_SITE_CONF $NGINX_SITE_LINK $SOCKET_FILE
 
 # Navigate to the app directory
 cd $APP_DIR
