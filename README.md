@@ -1,8 +1,18 @@
 # Ai-Text-Generator
 
-AI project to Generate output based on user input using any LLM
+AI project to Generate output based on user input using any LLM. App has been developed based on this [requirement](docs/index.md)
 
 This is a Python web application. This guide will help you set up the development environment, run the application locally, and deploy it using GitHub Actions to an AWS EC2 instance.
+
+## Ai-Text-Generator - Key Highlights
+
+This readme highlights some of the key features and functionalities of the Ai-Text-Generator app:
+
+- **Versatile LLM Support:** Leverage the power of different Large Language Models (LLMs) like OpenAI and Ollama. This flexibility allows you to choose the LLM that best suits your needs based on cost and capabilities.
+- **Database Agnostic:** The application can seamlessly work with both SQLite and MySQL databases. Choose the database that best integrates with your existing infrastructure or project requirements.
+- **Focus on Code Quality:** The well-defined tests mentioned in the readme indicate a strong emphasis on code quality. This translates to a more reliable and functional application.
+- **Enhanced Monitoring:** The app benefits from well-defined logging, which is crucial for debugging and monitoring the application's health.
+- **Streamlined Deployment:** Save time and effort with the fully functional CI/CD pipeline. This pipeline automates testing and deployment to your AWS EC2 instance.
 
 ## Prerequisites
 
@@ -145,10 +155,13 @@ python -m unittest test_dbhandler_mysql.py
 - Choose an Amazon Linux 2 AMI.
 - Create a new key pair or use an existing one for SSH access.
 - Ensure the security group allows SSH (port 22) and HTTP/HTTPS (ports 80/443).
+- My EC2 instance example
+  ![AWS EC2](docs/aws-ec2.png)
 
 ### 2. Configure GitHub Repository
 
 - Push your code to a GitHub repository.
+- Set secrets Refer to [CI/CD set up guide](setup_cicd.md) to set-up CI/CD pipeline.
 
 ### 3. Set Up GitHub Actions
 
@@ -161,8 +174,14 @@ python -m unittest test_dbhandler_mysql.py
 
 - Commit and push your changes to the `main` branch of your GitHub repository.
 - This triggers the GitHub Actions workflow, which builds the application, runs tests, and deploys it to your EC2 instance.
+- On sucessfull deployment you will see both test & deploy should be green (pass)
+  ![github-action](docs/github-action.png)
+- In case of any CI/CD error you will get notification on your account linked to github account (see example)
+  ![cicd-notification](docs/cicd-notification.png)
 
 Your application should now be accessible via the public IP or DNS of your EC2 instance.
+See below example
+![demo1](docs/demo1.png)
 
 ## Troubleshooting
 

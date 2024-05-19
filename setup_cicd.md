@@ -19,6 +19,7 @@ You need to configure the following secrets in your GitHub repository:
 5. `OPENAI_API_KEY`: The OpenAI API key for your application (replace with your actual secret).
 
 To set up secrets, go to your GitHub repository, navigate to `Settings` > `Secrets and variables` > `Actions`, and add the above secrets.
+![set up GitHub secrets](docs/set-secrets.png)
 
 #### Creating the deploy.yaml File
 
