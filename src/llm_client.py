@@ -46,7 +46,7 @@ def call_llm(llm, query):
 # Example usage
 if __name__ == "__main__":
     llm = initialize_llm()
-    query = "What is google?"
+    query = "What is facebook?"
     response = call_llm(llm, query)
     if response is not None:
         print(f"Response from LLM: {response}")
