@@ -182,7 +182,7 @@ python -m unittest test_dbhandler_mysql.py
 
 Your application should now be accessible via the public IP or DNS of your EC2 instance.
 See below example
-![demo1](docs/demo1.png)
+![demo1](docs/demo.png)
 
 ## Troubleshooting
 
