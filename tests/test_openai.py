@@ -9,10 +9,21 @@ load_dotenv(override=True)
 # Get OpenAI API key from environment variable
 #OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-template = """Question: {question}
+sentence = "tell me a joke"
+template = """
+    question_prompt = "Is the following sentence a question: '{sentence}'?"
+    sentence_prompt = "Is the following sentence a simple statement: '{sentence}'?"
+    joke_prompt = "Is the following text a joke: '{sentence}'?"
+    instruction_prompt = "Is the following text an instruction: '{sentence}'?"
 
-Answer: Let's think step by step."""
+"""
 
+sentence = "tell me a joke"
+
+template = """
+Classify the following text as one of the following categories: question, statement, joke, or instruction:
+"{sentence}"
+"""
 prompt = PromptTemplate.from_template(template)
 
 llm = OpenAI()
@@ -21,8 +32,10 @@ llm = OpenAI()
 
 llm_chain = prompt | llm
 
-question = "What is capital of Germany?"
 
-response = llm_chain.invoke(question)
+#response = llm_chain.invoke(question)
 
-print(response)
+#print(response)
+# streaming the output
+for chunk in llm_chain.stream(sentence):
+  print(chunk, end="", flush=True)

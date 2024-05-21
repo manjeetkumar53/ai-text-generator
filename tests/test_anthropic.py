@@ -1,5 +1,10 @@
+import os
+from dotenv import load_dotenv
+from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import PromptTemplate
-from langchain_community.llms import Ollama
+
+load_dotenv(override=True)
+llm = ChatAnthropic(model='claude-2.1',temperature=1)
 
 
 sentence = "How to make coffee?"
@@ -12,13 +17,10 @@ Answer with only one word.
 
 prompt = PromptTemplate.from_template(template)
 
-llm = Ollama(model="llama3")
-
-
 llm_chain = prompt | llm
 
 # Get response for the given sentence
 response = llm_chain.invoke(sentence)
 
 # Print the response, stripping any extraneous whitespace
-print(response.strip())
+print(response.content.strip())

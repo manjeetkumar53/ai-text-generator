@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import Error
 from contextlib import closing
-from src.logging_config import get_logger
+from logging_config import get_logger
 # Load environment variables from .env file
 load_dotenv(override=True)
 

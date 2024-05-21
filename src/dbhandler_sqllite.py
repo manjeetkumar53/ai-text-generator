@@ -1,6 +1,6 @@
 import sqlite3
 from contextlib import closing
-from src.logging_config import get_logger
+from logging_config import get_logger
 
 # Initialize logger
 logger = get_logger()

@@ -9,6 +9,8 @@ def initialize_llm():
         return OpenAI()
     elif llm_name == 'Ollama':
         return Ollama(model="llama3")
+    elif llm_name == 'anthropic':
+        return ChatAnthropic(model='claude-2.1')
     else:
         raise ValueError("Invalid LLM name")
 
@@ -24,9 +26,5 @@ load_dotenv(override=True)
 
 llm = initialize_llm()
 query = "How are you?"
-response = call_llm(llm, query)
-print(response)
-
-query = "Tell me a joke"
 response = call_llm(llm, query)
 print(response)

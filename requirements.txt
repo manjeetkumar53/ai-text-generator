@@ -2,8 +2,11 @@ flask
 langchain_community
 langchain_core
 langchain_openai
+langchain-anthropic
 mysql-connector-python
 python-dotenv
 requests
 gunicorn
 pytest
+nltk
+

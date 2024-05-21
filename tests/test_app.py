@@ -13,6 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 's
 # Import the app module
 from src.app import app
 
+
 class TestFlaskApp(unittest.TestCase):
 
     @classmethod
@@ -34,13 +35,12 @@ class TestFlaskApp(unittest.TestCase):
         mock_initialize_llm.return_value = mock_llm
         mock_call_llm.return_value = "Generated text"
 
-        response = self.client.post('/generate-text', json={'input_text': 'Test input'})
-        #print("response-->",response.json)
+        response = self.client.post('/generate-text', json={'input_text': 'Test input', 'model': 'llama3', 'temperature': 0.9})
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, {'generated_text': 'Generated text'})
-        mock_initialize_llm.assert_called_once()
-        mock_call_llm.assert_called_once_with(mock_llm, 'Test input')
+        mock_initialize_llm.assert_called_once_with('llama3', 0.9)  # Verify arguments passed
+        mock_call_llm.assert_called_once_with('llama3', mock_llm, 'Test input')
         mock_save_to_database.assert_called_once_with('Test input', 'Generated text')
 
     def test_generate_text_missing_input(self):

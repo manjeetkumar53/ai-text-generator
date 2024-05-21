@@ -1,18 +1,19 @@
 # Ai-Text-Generator
 
-AI project to Generate output based on user input using any LLM. App has been developed based on this [requirement](docs/index.md)
+AI project to Generate output based on user input using any LLM.
 
 This is a Python web application. This guide will help you set up the development environment, run the application locally, and deploy it using GitHub Actions to an AWS EC2 instance.
 
 ## Ai-Text-Generator - Key Highlights
 
-This readme highlights some of the key features and functionalities of the Ai-Text-Generator app:
+Some of the key features and functionalities of the Ai-Text-Generator app:
 
-- **Versatile LLM Support:** Leverage the power of different Large Language Models (LLMs) like OpenAI and Ollama. This flexibility allows you to choose the LLM that best suits your needs based on cost and capabilities.
-- **Database Agnostic:** The application can seamlessly work with both SQLite and MySQL databases. Choose the database that best integrates with your existing infrastructure or project requirements.
-- **Focus on Code Quality:** The well-defined tests mentioned in the readme indicate a strong emphasis on code quality. This translates to a more reliable and functional application.
-- **Enhanced Monitoring:** The app benefits from well-defined logging, which is crucial for debugging and monitoring the application's health.
+- **Multiple LLM Support:** Leverage the power of different Large Language Models (LLMs) like OpenAI, Llama3 and Anthropic. UI allows you to choose the LLM that best suits your needs based on cost and capabilities.
+- **Database Agnostic:** The application can seamlessly work with both SQLite and MySQL databases. It allow you to choose the database that best integrates with your existing infrastructure or project requirements.
+- **Focus on Code Quality:** The well-defined tests mentioned in the readme indicate a strong emphasis on code quality.
+- **Enhanced Logging:** The app benefits from well-defined logging, which is crucial for debugging and monitoring the application's health.
 - **Streamlined Deployment:** Save time and effort with the fully functional CI/CD pipeline. This pipeline automates testing and deployment to your AWS EC2 instance.
+- **Sentiment/Category analysis:** This app can analyze input category in terms if Question, instruction, statement, joke, mixed, etc.
 
 ## Prerequisites
 

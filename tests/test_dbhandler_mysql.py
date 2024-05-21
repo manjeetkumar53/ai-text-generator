@@ -67,7 +67,6 @@ class TestDBHandler(unittest.TestCase):
         result = self.cursor.fetchall()
         #check if result is not empty
         self.assertTrue(len(result) > 0)
-        print('mysql test--->',result)
 
 if __name__ == '__main__':
     unittest.main()
